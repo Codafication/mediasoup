@@ -12,19 +12,11 @@
     "type": "git",
     "url": "https://github.com/versatica/mediasoup.git"
   },
-  "keywords": [
-    "webrtc",
-    "sfu",
-    "node",
-    "node-module",
-    "ortc"
-  ],
+  "keywords": ["webrtc", "sfu", "node", "node-module", "ortc"],
   "bugs": {
     "url": "https://github.com/versatica/mediasoup/issues"
   },
-  "os": [
-    "!win32"
-  ],
+  "os": ["!win32"],
   "engines": {
     "node": ">=6.4"
   },
@@ -52,6 +44,6 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "make Release"
+    "postinstall": "make Debug"
   }
 }
