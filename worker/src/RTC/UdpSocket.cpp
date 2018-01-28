@@ -73,10 +73,10 @@ namespace RTC
 		} while (i++ != RTC::UdpSocket::maxPort);
 	}
 
-	uv_udp_t* UdpSocket::GetRandomPort(int addressFamily)
+	uv_udp_t* UdpSocket::GetRandomPort(int addressFamily, Listener* listener)
 	{
 		MS_TRACE();
-
+	
 		if (addressFamily == AF_INET && !Settings::configuration.hasIPv4)
 			MS_THROW_ERROR("IPv4 family not available for RTC");
 		else if (addressFamily == AF_INET6 && !Settings::configuration.hasIPv6)
@@ -216,7 +216,7 @@ namespace RTC
 	  : // Provide the parent class constructor with a UDP uv handle.
 	    // NOTE: This may throw a MediaSoupError exception if the address family is not available
 	    // or there are no available ports.
-	    ::UdpSocket::UdpSocket(GetRandomPort(addressFamily)), listener(listener)
+	    ::UdpSocket::UdpSocket(GetRandomPort(addressFamily, listener)), listener(listener)
 	{
 		MS_TRACE();
 	}

@@ -25,7 +25,7 @@ namespace RTC
 		static void ClassInit();
 
 	private:
-		static uv_udp_t* GetRandomPort(int addressFamily);
+		static uv_udp_t* GetRandomPort(int addressFamily, Listener* listener);
 
 	private:
 		static struct sockaddr_storage sockaddrStorageIPv4;
