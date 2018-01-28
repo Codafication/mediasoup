@@ -40,7 +40,7 @@ namespace RTC
 				if (err != 0)
 					MS_ABORT("uv_ipv4_addr() failed: %s", uv_strerror(err));
 
-				this->udpSocket = new RTC::UdpSocket(this, AF_INET, options.remoteIP);
+				this->udpSocket = new RTC::UdpSocket(this, AF_INET, true);
 
 				break;
 			}
@@ -57,7 +57,7 @@ namespace RTC
 				if (err != 0)
 					MS_ABORT("uv_ipv6_addr() failed: %s", uv_strerror(err));
 
-				this->udpSocket = new RTC::UdpSocket(this, AF_INET6, options.remoteIP);
+				this->udpSocket = new RTC::UdpSocket(this, AF_INET6, false);
 
 				break;
 			}

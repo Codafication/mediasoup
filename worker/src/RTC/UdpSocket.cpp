@@ -79,7 +79,7 @@ namespace RTC
 		} while (i++ != RTC::UdpSocket::maxPort);
 	}
 
-	uv_udp_t* UdpSocket::GetRandomPort(int addressFamily, std::string remoteIP)
+	uv_udp_t* UdpSocket::GetRandomPort(int addressFamily, bool isPlainRtpTransport)
 	{
 		MS_TRACE();
 
@@ -105,10 +105,10 @@ namespace RTC
 		{
 			case AF_INET:
 				availablePorts = &RTC::UdpSocket::availableIPv4Ports;
-				if (remoteIP == std::string("127.0.0.1"))
+				if (isPlainRtpTransport)
 				{
 					bindAddr = RTC::UdpSocket::sockaddrStorageIPv4Loopback;
-					listenIp = remoteIP.c_str();
+					listenIp = "127.0.0.1";
 				}
 				else
 				{
@@ -226,11 +226,11 @@ namespace RTC
 
 	/* Instance methods. */
 
-	UdpSocket::UdpSocket(Listener* listener, int addressFamily, std::string remoteIP)
+	UdpSocket::UdpSocket(Listener* listener, int addressFamily, bool isPlainRtpTransport)
 	  : // Provide the parent class constructor with a UDP uv handle.
 	    // NOTE: This may throw a MediaSoupError exception if the address family is not available
 	    // or there are no available ports.
-	    ::UdpSocket::UdpSocket(GetRandomPort(addressFamily, remoteIP)), listener(listener)
+	    ::UdpSocket::UdpSocket(GetRandomPort(addressFamily, isPlainRtpTransport)), listener(listener)
 	{
 		MS_TRACE();
 	}

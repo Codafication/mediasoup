@@ -70,7 +70,7 @@ namespace RTC
 
 			try
 			{
-				auto* udpSocket = new RTC::UdpSocket(this, AF_INET, std::string(""));
+				auto* udpSocket = new RTC::UdpSocket(this, AF_INET, false);
 				RTC::IceCandidate iceCandidate(udpSocket, priority);
 
 				this->udpSockets.push_back(udpSocket);
@@ -96,7 +96,7 @@ namespace RTC
 
 			try
 			{
-				auto* udpSocket = new RTC::UdpSocket(this, AF_INET6, std::string(""));
+				auto* udpSocket = new RTC::UdpSocket(this, AF_INET6, false);
 				RTC::IceCandidate iceCandidate(udpSocket, priority);
 
 				this->udpSockets.push_back(udpSocket);
