@@ -25,6 +25,7 @@ namespace RTC
 	/* Class variables. */
 
 	struct sockaddr_storage UdpSocket::sockaddrStorageIPv4;
+	struct sockaddr_storage UdpSocket::sockaddrStorageIPv4Loopback;
 	struct sockaddr_storage UdpSocket::sockaddrStorageIPv6;
 	uint16_t UdpSocket::minPort;
 	uint16_t UdpSocket::maxPort;
@@ -45,6 +46,11 @@ namespace RTC
 			  Settings::configuration.rtcIPv4.c_str(),
 			  0,
 			  reinterpret_cast<struct sockaddr_in*>(&RTC::UdpSocket::sockaddrStorageIPv4));
+
+			err = uv_ip4_addr(
+			  "127.0.0.1",
+			  0,
+			  reinterpret_cast<struct sockaddr_in*>(&RTC::UdpSocket::sockaddrStorageIPv4Loopback));
 
 			if (err != 0)
 				MS_THROW_ERROR("uv_ipv4_addr() failed: %s", uv_strerror(err));
@@ -73,10 +79,10 @@ namespace RTC
 		} while (i++ != RTC::UdpSocket::maxPort);
 	}
 
-	uv_udp_t* UdpSocket::GetRandomPort(int addressFamily, Listener* listener)
+	uv_udp_t* UdpSocket::GetRandomPort(int addressFamily, std::string remoteIP)
 	{
 		MS_TRACE();
-	
+
 		if (addressFamily == AF_INET && !Settings::configuration.hasIPv4)
 			MS_THROW_ERROR("IPv4 family not available for RTC");
 		else if (addressFamily == AF_INET6 && !Settings::configuration.hasIPv6)
@@ -99,8 +105,16 @@ namespace RTC
 		{
 			case AF_INET:
 				availablePorts = &RTC::UdpSocket::availableIPv4Ports;
-				bindAddr       = RTC::UdpSocket::sockaddrStorageIPv4;
-				listenIp       = Settings::configuration.rtcIPv4.c_str();
+				if (remoteIP == std::string("127.0.0.1"))
+				{
+					bindAddr = RTC::UdpSocket::sockaddrStorageIPv4Loopback;
+					listenIp = remoteIP.c_str();
+				}
+				else
+				{
+					bindAddr = RTC::UdpSocket::sockaddrStorageIPv4;
+					listenIp = Settings::configuration.rtcIPv4.c_str();
+				}
 				break;
 
 			case AF_INET6:
@@ -212,11 +226,11 @@ namespace RTC
 
 	/* Instance methods. */
 
-	UdpSocket::UdpSocket(Listener* listener, int addressFamily)
+	UdpSocket::UdpSocket(Listener* listener, int addressFamily, std::string remoteIP)
 	  : // Provide the parent class constructor with a UDP uv handle.
 	    // NOTE: This may throw a MediaSoupError exception if the address family is not available
 	    // or there are no available ports.
-	    ::UdpSocket::UdpSocket(GetRandomPort(addressFamily, listener)), listener(listener)
+	    ::UdpSocket::UdpSocket(GetRandomPort(addressFamily, remoteIP)), listener(listener)
 	{
 		MS_TRACE();
 	}
