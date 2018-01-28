@@ -3,13 +3,13 @@
 
 #include "common.hpp"
 #include "Channel/Notifier.hpp"
-#include "RTC/Transport.hpp"
+#include "RTC/TransportLoopback.hpp"
 #include <json/json.h>
 #include <string>
 
 namespace RTC
 {
-	class PlainRtpTransport : public RTC::Transport
+	class PlainRtpTransport : public RTC::TransportLoopback
 	{
 	public:
 		struct Options
@@ -20,7 +20,7 @@ namespace RTC
 
 	public:
 		PlainRtpTransport(
-		  RTC::Transport::Listener* listener,
+		  RTC::TransportLoopback::Listener* listener,
 		  Channel::Notifier* notifier,
 		  uint32_t transportId,
 		  Options& options);
@@ -44,14 +44,17 @@ namespace RTC
 		void OnRtpDataRecv(RTC::TransportTuple* tuple, const uint8_t* data, size_t len);
 		void OnRtcpDataRecv(RTC::TransportTuple* tuple, const uint8_t* data, size_t len);
 
-		/* Pure virtual methods inherited from RTC::UdpSocket::Listener. */
+		/* Pure virtual methods inherited from RTC::UdpSocketLoopback::Listener. */
 	public:
 		void OnPacketRecv(
-		  RTC::UdpSocket* socket, const uint8_t* data, size_t len, const struct sockaddr* remoteAddr) override;
+		  RTC::UdpSocketLoopback* socket,
+		  const uint8_t* data,
+		  size_t len,
+		  const struct sockaddr* remoteAddr) override;
 
 	private:
 		// Allocated by this.
-		RTC::UdpSocket* udpSocket{ nullptr };
+		RTC::UdpSocketLoopback* udpSocket{ nullptr };
 		RTC::TransportTuple* tuple{ nullptr };
 		// Others.
 		struct sockaddr_storage remoteAddrStorage

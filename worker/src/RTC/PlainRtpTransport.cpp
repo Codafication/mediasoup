@@ -40,7 +40,7 @@ namespace RTC
 				if (err != 0)
 					MS_ABORT("uv_ipv4_addr() failed: %s", uv_strerror(err));
 
-				this->udpSocket = new RTC::UdpSocket(this, AF_INET);
+				this->udpSocket = new RTC::UdpSocketLoopback(this, AF_INET);
 
 				break;
 			}
@@ -57,7 +57,7 @@ namespace RTC
 				if (err != 0)
 					MS_ABORT("uv_ipv6_addr() failed: %s", uv_strerror(err));
 
-				this->udpSocket = new RTC::UdpSocket(this, AF_INET6);
+				this->udpSocket = new RTC::UdpSocketLoopback(this, AF_INET6);
 
 				break;
 			}
@@ -281,7 +281,7 @@ namespace RTC
 	}
 
 	void PlainRtpTransport::OnPacketRecv(
-	  RTC::UdpSocket* socket, const uint8_t* data, size_t len, const struct sockaddr* remoteAddr)
+	  RTC::UdpSocketLoopback* socket, const uint8_t* data, size_t len, const struct sockaddr* remoteAddr)
 	{
 		MS_TRACE();
 

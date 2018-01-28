@@ -42,8 +42,10 @@
       'src/RTC/TcpConnection.cpp',
       'src/RTC/TcpServer.cpp',
       'src/RTC/Transport.cpp',
+      'src/RTC/TransportLoopback.cpp',
       'src/RTC/TransportTuple.cpp',
       'src/RTC/UdpSocket.cpp',
+      'src/RTC/UdpSocketLoopback.cpp',
       'src/RTC/WebRtcTransport.cpp',
       'src/RTC/Codecs/Codecs.cpp',
       'src/RTC/Codecs/VP8.cpp',
@@ -96,6 +98,7 @@
       'src/handles/TcpServer.cpp',
       'src/handles/Timer.cpp',
       'src/handles/UdpSocket.cpp',
+      'src/handles/UdpSocketLoopback.cpp',
       'src/handles/UnixStreamSocket.cpp',
       # C++ include files
       'include/DepLibSRTP.hpp',

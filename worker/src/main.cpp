@@ -15,6 +15,7 @@
 #include "RTC/SrtpSession.hpp"
 #include "RTC/TcpServer.hpp"
 #include "RTC/UdpSocket.hpp"
+#include "RTC/UdpSocketLoopback.hpp"
 #include <uv.h>
 #include <cerrno>
 #include <csignal>  // sigaction()
@@ -115,6 +116,7 @@ void init()
 	DepLibSRTP::ClassInit();
 	Utils::Crypto::ClassInit();
 	RTC::UdpSocket::ClassInit();
+	RTC::UdpSocketLoopback::ClassInit();
 	RTC::TcpServer::ClassInit();
 	RTC::DtlsTransport::ClassInit();
 	RTC::SrtpSession::ClassInit();
