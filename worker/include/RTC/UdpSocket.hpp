@@ -25,10 +25,11 @@ namespace RTC
 		static void ClassInit();
 
 	private:
-		static uv_udp_t* GetRandomPort(int addressFamily);
+		static uv_udp_t* GetRandomPort(int addressFamily, bool isPlainRtpTransport);
 
 	private:
 		static struct sockaddr_storage sockaddrStorageIPv4;
+		static struct sockaddr_storage sockaddrStorageIPv4Loopback;
 		static struct sockaddr_storage sockaddrStorageIPv6;
 		static uint16_t minPort;
 		static uint16_t maxPort;
@@ -36,7 +37,7 @@ namespace RTC
 		static std::unordered_map<uint16_t, bool> availableIPv6Ports;
 
 	public:
-		UdpSocket(Listener* listener, int addressFamily);
+		UdpSocket(Listener* listener, int addressFamily, bool isPlainRtpTransport);
 
 	private:
 		~UdpSocket() override = default;
