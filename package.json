@@ -44,6 +44,6 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "make Debug"
+    "postinstall": "make Release"
   }
 }
